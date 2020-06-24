@@ -76,11 +76,11 @@ file:
     path: ~/file/
     avatar: ~/avatar/
   linux:
-    path: /home/eladmin/file/
-    avatar: /home/eladmin/avatar/
+    path: /home/hugoX/file/
+    avatar: /home/hugoX/avatar/
   windows:
-    path: C:\eladmin\file\
-    avatar: C:\eladmin\avatar\
+    path: C:\hugoX\file\
+    avatar: C:\hugoX\avatar\
   # 文件大小 /M
   maxSize: 100
   avatarMaxSize: 5
