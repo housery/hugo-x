@@ -2,6 +2,7 @@ package com.xiaohoo.controller;
 
 import io.swagger.annotations.Api;
 import me.zhengjie.annotation.AnonymousAccess;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class HugoController {
 
     @GetMapping("/hi")
     @AnonymousAccess
-    public String test() {
-        return "hi";
+    public ResponseEntity test() {
+        return ResponseEntity.ok("hello");
     }
 }
