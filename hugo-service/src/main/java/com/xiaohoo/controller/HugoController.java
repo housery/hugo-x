@@ -1,13 +1,12 @@
 package com.xiaohoo.controller;
 
 import io.swagger.annotations.Api;
-import me.zhengjie.annotation.AnonymousAccess;
+import com.xiaohoo.annotation.AnonymousAccess;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
