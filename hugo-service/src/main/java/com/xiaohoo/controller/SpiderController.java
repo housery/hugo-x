@@ -14,23 +14,46 @@ import org.springframework.web.bind.annotation.RestController;
  * @date ：2020/7/9
  * @email :1126457667@qq.com
  */
-@Api(tags = "爬虫：微博热搜")
+@Api(tags = "HUGO：爬虫")
 @RestController
 @RequestMapping("/spider")
 public class SpiderController {
 
     @Autowired
-    private SpiderService weiboSpiderService;
+    private SpiderService spiderService;
+
+    @GetMapping("/syncAll")
+    @AnonymousAccess
+    public ResponseEntity syncAll() {
+        spiderService.syncHotSearch4Weibo();
+        spiderService.syncHotSearch4Baidu();
+        spiderService.syncHotSearch4Wechat();
+        spiderService.syncHotSearch4Zhihu();
+
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/weiboSync")
     @AnonymousAccess
     public ResponseEntity weiboSync() {
-        return ResponseEntity.ok(weiboSpiderService.syncHotSearch4Weibo());
+        return ResponseEntity.ok(spiderService.syncHotSearch4Weibo());
     }
 
     @GetMapping("/baiduSync")
     @AnonymousAccess
     public ResponseEntity baiduSync() {
-        return ResponseEntity.ok(weiboSpiderService.syncHotSearch4Baidu());
+        return ResponseEntity.ok(spiderService.syncHotSearch4Baidu());
+    }
+
+    @GetMapping("/zhihuSync")
+    @AnonymousAccess
+    public ResponseEntity zhihuSync() {
+        return ResponseEntity.ok(spiderService.syncHotSearch4Zhihu());
+    }
+
+    @GetMapping("/weixinSync")
+    @AnonymousAccess
+    public ResponseEntity weixinSync() {
+        return ResponseEntity.ok(spiderService.syncHotSearch4Wechat());
     }
 }

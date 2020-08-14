@@ -2,11 +2,12 @@ package com.xiaohoo.service.spider.impl;
 
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
-import com.xiaohoo.dao.WeiboHotSearchRepository;
+import com.xiaohoo.dao.HotSearchRepository;
 import com.xiaohoo.entity.HotSearch;
 import com.xiaohoo.service.spider.SpiderService;
 import com.xiaohoo.util.HugoConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +28,7 @@ import java.util.List;
 public class SpiderServiceImpl implements SpiderService {
 
     @Autowired
-    private WeiboHotSearchRepository weiboHotSearchRepository;
+    private HotSearchRepository hotSearchRepository;
 
     // 微博热搜地址
     private static final String WEB_URL = "https://s.weibo.com/top/summary";
@@ -36,7 +37,15 @@ public class SpiderServiceImpl implements SpiderService {
 
     private static final String BAIDU_URL = "http://top.baidu.com/buzz?b=1&fr=topindex";
 
+    private static final String ZHIHU_URL = "https://tophub.today/";
+
     private final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36";
+
+    /**知乎 tophub 节点id*/
+    private static final String ZHIHU_NODE_ID = "#node-6";
+
+    /**微信 tophub 节点id*/
+    private static final String WEIXIN_NODE_ID = "#node-5";
 
 
     @Override
@@ -52,7 +61,7 @@ public class SpiderServiceImpl implements SpiderService {
         List<HotSearch> weiboHotSearches = parseWeiboList(rows);
 
         // 数据持久化
-        List<HotSearch> result = weiboHotSearchRepository.saveAll(weiboHotSearches);
+        List<HotSearch> result = hotSearchRepository.saveAll(weiboHotSearches);
         return result;
     }
 
@@ -65,7 +74,20 @@ public class SpiderServiceImpl implements SpiderService {
                 .body();
         Document doc = Jsoup.parse(body);
         Elements rows = doc.select(".list-table tbody tr");
-        return weiboHotSearchRepository.saveAll(parseBaiduHtml(rows));
+        return hotSearchRepository.saveAll(parseBaiduHtml(rows));
+    }
+
+    @Override
+    public List<HotSearch> syncHotSearch4Zhihu() {
+        List<HotSearch> hotSearches = commonTophubSpider(ZHIHU_NODE_ID, HugoConstant.ZHIHU);
+        return hotSearchRepository.saveAll(hotSearches);
+
+    }
+
+    @Override
+    public List<HotSearch> syncHotSearch4Wechat() {
+        List<HotSearch> hotSearches = commonTophubSpider(WEIXIN_NODE_ID, HugoConstant.WEIXIN);
+        return hotSearchRepository.saveAll(hotSearches);
     }
 
     /**
@@ -125,5 +147,56 @@ public class SpiderServiceImpl implements SpiderService {
             result.add(hotSearch);
         }
         return result;
+    }
+
+    /**
+     * 解析今日热榜热搜表单
+     */
+    private List<HotSearch> parseTophubHtml(Elements rows, String source) {
+        List<HotSearch> result = new ArrayList<>();
+        for (Element aEle : rows) {
+            String reduStr = "";
+            HotSearch hotSearch = new HotSearch();
+            String href = aEle.attr("href");
+            String order = aEle.select(".s").first().text();
+            String title = aEle.select(".t").first().text();
+            if (source.equals(HugoConstant.ZHIHU)) {
+                reduStr = aEle.select(".e").first().text().split(" ")[0];// 热度，单位-万热度
+                // 跳过非数字类
+                if (!NumberUtils.isDigits(reduStr)) {
+                    continue;
+                }
+            } else if (source.equals(HugoConstant.WEIXIN)) {
+                reduStr = aEle.select(".e").first().text().split(" ")[3]; // 微信在看
+            }
+
+            hotSearch.setUrl(href);
+            hotSearch.setOrders(Integer.valueOf(order));
+            hotSearch.setKeyword(title);
+            hotSearch.setPeopleCount(Long.valueOf(reduStr));
+            hotSearch.setSource(source);
+
+            result.add(hotSearch);
+        }
+
+        return result;
+    }
+
+    /**
+     * tophub 通用列表解析
+     * @param htmlListId 榜单html页面列表ID
+     * @return 解析结果
+     */
+    private List<HotSearch> commonTophubSpider(String htmlListId, String source) {
+        String body = HttpRequest.get(ZHIHU_URL)
+                .header(Header.USER_AGENT, USER_AGENT)   // 设置代理，防止请求不到
+                .timeout(20000)
+                .execute()
+                .body();
+        Document doc = Jsoup.parse(body);
+        Elements listEle = doc.select(htmlListId);
+        Elements rows = listEle.select(".cc-cd-cb-l>a");
+
+        return parseTophubHtml(rows, source);
     }
 }

@@ -11,4 +11,8 @@ public interface HugoConstant {
     String WEIBO = "微博";
 
     String BAIDU = "百度";
+
+    String ZHIHU = "知乎";
+
+    String WEIXIN = "微信";
 }

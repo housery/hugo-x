@@ -22,4 +22,14 @@ public interface SpiderService {
      * @return 热搜列表
      */
     List<HotSearch> syncHotSearch4Baidu();
+
+    /**
+     * 知乎热榜
+     */
+    List<HotSearch> syncHotSearch4Zhihu();
+
+    /**
+     * 微信热文
+     */
+    List<HotSearch> syncHotSearch4Wechat();
 }
