@@ -1,6 +1,7 @@
 package com.xiaohoo.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import com.xiaohoo.base.BaseEntity;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="hugo_hot_search")
-public class WeiboHotSearch extends BaseEntity {
+public class HotSearch extends BaseEntity {
 
     @Id
     @Column(name = "hot_id")
@@ -40,4 +41,7 @@ public class WeiboHotSearch extends BaseEntity {
     @ApiModelProperty(value = "参与人数")
     @Column(name = "people_count")
     private Long peopleCount;
+
+    @ApiModelProperty(value = "来源")
+    private String source;
 }

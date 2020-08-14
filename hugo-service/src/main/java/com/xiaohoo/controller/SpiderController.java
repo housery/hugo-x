@@ -1,6 +1,6 @@
 package com.xiaohoo.controller;
 
-import com.xiaohoo.service.spider.WeiboSpiderService;
+import com.xiaohoo.service.spider.SpiderService;
 import io.swagger.annotations.Api;
 import com.xiaohoo.annotation.AnonymousAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpiderController {
 
     @Autowired
-    private WeiboSpiderService weiboSpiderService;
+    private SpiderService weiboSpiderService;
 
     @GetMapping("/weiboSync")
     @AnonymousAccess
     public ResponseEntity weiboSync() {
-        return ResponseEntity.ok(weiboSpiderService.syncHotSearch());
+        return ResponseEntity.ok(weiboSpiderService.syncHotSearch4Weibo());
+    }
+
+    @GetMapping("/baiduSync")
+    @AnonymousAccess
+    public ResponseEntity baiduSync() {
+        return ResponseEntity.ok(weiboSpiderService.syncHotSearch4Baidu());
     }
 }
