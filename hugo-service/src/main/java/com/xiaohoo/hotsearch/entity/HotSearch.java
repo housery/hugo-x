@@ -1,7 +1,6 @@
-package com.xiaohoo.entity;
+package com.xiaohoo.hotsearch.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import com.xiaohoo.base.BaseEntity;

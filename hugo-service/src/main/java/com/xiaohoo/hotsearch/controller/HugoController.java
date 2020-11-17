@@ -1,4 +1,4 @@
-package com.xiaohoo.controller;
+package com.xiaohoo.hotsearch.controller;
 
 import io.swagger.annotations.Api;
 import com.xiaohoo.annotation.AnonymousAccess;

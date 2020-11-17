@@ -1,6 +1,6 @@
-package com.xiaohoo.service.spider;
+package com.xiaohoo.hotsearch.spider;
 
-import com.xiaohoo.entity.HotSearch;
+import com.xiaohoo.hotsearch.entity.HotSearch;
 
 import java.util.List;
 

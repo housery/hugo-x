@@ -1,6 +1,6 @@
-package com.xiaohoo.controller;
+package com.xiaohoo.hotsearch.controller;
 
-import com.xiaohoo.service.spider.SpiderService;
+import com.xiaohoo.hotsearch.spider.SpiderService;
 import io.swagger.annotations.Api;
 import com.xiaohoo.annotation.AnonymousAccess;
 import org.springframework.beans.factory.annotation.Autowired;

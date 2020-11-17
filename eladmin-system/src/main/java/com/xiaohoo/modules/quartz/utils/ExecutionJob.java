@@ -85,7 +85,7 @@ public class ExecutionJob extends QuartzJobBean {
                 }
             }
         } catch (Exception e) {
-            logger.error("任务执行失败，任务名称：{}" + quartzJob.getJobName(), e);
+            logger.error("任务执行失败，任务名称：" + quartzJob.getJobName(), e);
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
             // 任务状态 0：成功 1：失败

@@ -1,10 +1,10 @@
-package com.xiaohoo.service.spider.impl;
+package com.xiaohoo.hotsearch.spider.impl;
 
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
-import com.xiaohoo.dao.HotSearchRepository;
-import com.xiaohoo.entity.HotSearch;
-import com.xiaohoo.service.spider.SpiderService;
+import com.xiaohoo.hotsearch.dao.HotSearchRepository;
+import com.xiaohoo.hotsearch.entity.HotSearch;
+import com.xiaohoo.hotsearch.spider.SpiderService;
 import com.xiaohoo.util.HugoConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;

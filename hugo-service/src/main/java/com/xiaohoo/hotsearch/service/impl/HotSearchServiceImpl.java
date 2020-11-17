@@ -1,8 +1,8 @@
-package com.xiaohoo.service.hotSearch.impl;
+package com.xiaohoo.hotsearch.service.impl;
 
-import com.xiaohoo.dao.HotSearchRepository;
-import com.xiaohoo.entity.HotSearch;
-import com.xiaohoo.service.hotSearch.HotSearchService;
+import com.xiaohoo.hotsearch.dao.HotSearchRepository;
+import com.xiaohoo.hotsearch.entity.HotSearch;
+import com.xiaohoo.hotsearch.service.HotSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
